@@ -1,11 +1,11 @@
 Game Boy Dev Cheat Sheet
 
-Screen size: 160 x 144
+Screen size: 160 x 144  (20 x 18 tiles, 360 tiles total)
 LT range: 0-153 
   - 144-153 is VBLANK
   - Window X position inclues an 8-pixel gutter on the left
 Sprite X range: 0-168 (8-pixel bumpers around screen, values > 168 hide an object)
-Sprite Y range: 0-160 (16-pixel bumpers above and below the screen, values >- 160 hide an object)
+Sprite Y range: 0-160 (16-pixel bumpers above and below the screen, values > 160 hide an object)
 Memory can hold 384 tiles:
   - 128 tiles of sprites
   - 128 for background tiles
