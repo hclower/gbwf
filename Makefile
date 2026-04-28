@@ -10,7 +10,7 @@ ifndef GBDK_HOME
 endif
 
 LCC = $(GBDK_HOME)/bin/lcc 
-LCCFLAGS = -Wl-m -Wl-w -Wl-j -Wm-yS
+LCCFLAGS = -Wl-m -Wl-w -Wl-j -Wm-yS -Iinc
 IMG_CONVERTER = png2asset
 IMG_CONVERTER_OPTS = -spr8x8 -tiles_only -no_palettes -keep_duplicate_tiles
 
