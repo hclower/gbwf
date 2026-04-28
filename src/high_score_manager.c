@@ -43,7 +43,7 @@ void initHighScoreList( void )
  *  @return TRUE  if newScore is greater than the lowest socre on the list.
  *          FALSE otherwise.
  **/
-uint8_t isNewHighScore( UINT32 newScore )
+uint8_t isNewHighScore( uint32_t newScore )
 {
   if( newScore > high_score_list[0].score )
     return 0;

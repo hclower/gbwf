@@ -3,6 +3,7 @@
  */
 
 #include <gb/gb.h>
+#include <stdint.h>
 #include <stdio.h>
 
 #include "title_screen_state.h"
@@ -16,7 +17,7 @@ void displayHighScores( void );
 /**
  * Top-level function to run the title screen state.
  */
-UINT8 RunState_TitleScreen( UINT8 start_at_hiscores ) {
+uint8_t RunState_TitleScreen( uint8_t start_at_hiscores ) {
 	start_at_hiscores = 0;
 	displayHighScores();
 	return GAME_STATE;

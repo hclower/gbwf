@@ -6,8 +6,9 @@
 #define _TITLE_SCREEN_STATE_H
 
 #include <gb/gb.h>
+#include <stdint.h>
 #include "gbwf.h"
 
-UINT8 RunState_TitleScreen( UINT8 start_at_hiscores );
+uint8_t RunState_TitleScreen( uint8_t start_at_hiscores );
 
 #endif

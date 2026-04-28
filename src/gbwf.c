@@ -16,7 +16,7 @@
 
 #include "error_codes.h"
 
-UINT32 score;
+uint32_t score;
 
 void main(void)
 {
@@ -28,7 +28,7 @@ void main(void)
 
   // Initialize high scores
   initHighScoreList();
-  
+
   while( 1 )
   {
     // Title screen - cycles between title screen, high scores, and attract

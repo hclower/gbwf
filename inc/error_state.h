@@ -6,7 +6,8 @@
 #define _ERROR_STATE_H
 
 #include <gb/gb.h> 
+#include <stdint.h>
 
-void RunState_Error( UINT8 error_code, UINT16 data );
+void RunState_Error( uint8_t error_code, uint16_t data );
 
 #endif
