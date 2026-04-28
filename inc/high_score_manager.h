@@ -11,19 +11,21 @@
 #define _HIGH_SCORE_MANAGER_H
 
 #include <gb/gb.h>
+#include <stdint.h>
 
 #define HS_LIST_LENGTH 10U
 
 struct HighScoreEntry_s {
-  UINT8  name[3];
-  UINT32 score;
+  uint8_t  name[4];
+  uint32_t score;
 };
 
 typedef struct HighScoreEntry_s HighScoreEntry_t;
 
-int isNewHighScore  ( UINT32 newScore );
-int addNewHighScore ( UINT32 newScore, char name[3] );
-int getHighScorePtr ( UINT32 scoreNum,  HighScoreEntry_t *scorePtr );
-int getAllScorePtr  ( HighScoreEntry_t *scoreList[] );
+void               initHighScoreList ( void );
+uint8_t            isNewHighScore    ( uint32_t newScore );
+void               addNewHighScore   ( uint32_t newScore, char name[4] );
+HighScoreEntry_t * getHighScorePtr   ( uint32_t score_num );
+HighScoreEntry_t * getAllScorePtr    ( void );
 
 #endif

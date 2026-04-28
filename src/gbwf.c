@@ -26,6 +26,9 @@ void main(void)
   // Splash screen- run once and then exit
   RunState_SplashScreen();
 
+  // Initialize high scores
+  initHighScoreList();
+  
   while( 1 )
   {
     // Title screen - cycles between title screen, high scores, and attract
