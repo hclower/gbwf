@@ -39,6 +39,7 @@ void main(void)
       case OPTIONS_STATE:
         RunState_Options();
         break;
+
       case GAME_STATE:
         RunState_Game();
 
@@ -47,6 +48,7 @@ void main(void)
 
         RunState_GameOver();
         break;
+
       default:
         RunState_Error( kBadState, return_value );
         break;

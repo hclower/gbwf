@@ -2,8 +2,8 @@ To Do List
 
 [X] Write up rough roadmap
 
-[ ] Remove temp HS handler testing code
-[ ] Add utitities w/ 'wait for any button' function
+[X] Remove temp HS handler testing code
+[X] Add utitities w/ 'wait for any button' function
 [X] Add automated size display to makefile
 
 - Error handling:

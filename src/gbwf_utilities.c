@@ -2,6 +2,7 @@
  * GBWF Utilities
  */
 
+#include "gbwf_utilities.h"
 #include <gb/gb.h>
 
 /**
