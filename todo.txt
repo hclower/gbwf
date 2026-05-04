@@ -1,0 +1,16 @@
+To Do List
+
+[ ] Game state skeleton
+
+- Background:
+ [ ] Port parallax BG stuff into game state
+ [ ] Modify parallax BG stuff to use precalculated tables for values
+ [ ] Update to support 2x2 tile patterns
+ [ ] Modify to support one tile high status menu
+
+- Bullets
+ [ ] Put together fake linked list implementation to hold bullets
+ [ ] Write functions to add/remove bullets from list
+ [ ] Write update loop for bullets
+ [ ] Figure out structure for bullets
+ [ ] Test w/ max # of bullets onscreen
