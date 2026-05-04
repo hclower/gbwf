@@ -6,14 +6,18 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "error_state.h"
+#include "error_manager.h"
+#include "gbwf.h"
 
-void RunState_Error( uint8_t error_code, uint16_t data ) {
+topLevelState_t RunState_Error( void ) {
   char errorinfo[16];
-
-  sprintf(errorinfo, "code %d\n", error_code);
+  puts ("Fatal error:");
+  sprintf(errorinfo, " code 0x%x\n", global_err_code);
   puts(errorinfo);
-  sprintf(errorinfo, "data %d\n", data);
+  sprintf(errorinfo, " data   %d\n", global_err_data);
+  puts(errorinfo);
+  sprintf(errorinfo, "      0x%x\n", global_err_data);
   puts(errorinfo);
 
-  return;
+  return kErrorState;
 }

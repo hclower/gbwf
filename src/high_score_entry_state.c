@@ -11,8 +11,8 @@
 #include "gbwf_utilities.h"
 #include "high_score_manager.h"
 
-void RunState_HighScoreEntry( void ) {
-	return;
+topLevelState_t RunState_HighScoreEntry( void ) {
+	return kTitleScreenState;
 }
 
 /** Retained test code from elsewhere, kept for reference. */

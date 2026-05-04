@@ -16,8 +16,8 @@
 /**
  * Top-level function to run the title screen state.
  */
-uint8_t RunState_TitleScreen( uint8_t start_at_hiscores ) {
+topLevelState_t RunState_TitleScreen( uint8_t start_at_hiscores ) {
 	start_at_hiscores = 0;
 
-	return GAME_STATE;
+	return kGameState;
 }

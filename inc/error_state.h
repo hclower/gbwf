@@ -7,7 +7,8 @@
 
 #include <gb/gb.h> 
 #include <stdint.h>
+#include "gbwf.h"
 
-void RunState_Error( uint8_t error_code, uint16_t data );
+topLevelState_t RunState_Error( void );
 
 #endif

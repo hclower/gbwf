@@ -4,6 +4,8 @@
 
 #include "game_state.h"
 
-void RunState_Game( void ) {
-	return;
+topLevelState_t RunState_Game( void ) {
+
+	// Go to either Game Over or High Score Entry states
+	return kGameOverState;
 }

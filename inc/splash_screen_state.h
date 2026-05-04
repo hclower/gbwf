@@ -8,6 +8,8 @@
 #ifndef _SPLASH_SCREEN_STATE_H
 #define _SPLASH_SCREEN_STATE_H
 
-void RunState_SplashScreen( void );
+#include "gbwf.h"
+
+topLevelState_t RunState_SplashScreen( void );
 
 #endif

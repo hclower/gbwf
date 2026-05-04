@@ -8,6 +8,6 @@
 /**
  * Top-level function to run the options state.
  */
-void RunState_Options( void ) {
-	return;
+topLevelState_t RunState_Options( void ) {
+	return kTitleScreenState;
 }

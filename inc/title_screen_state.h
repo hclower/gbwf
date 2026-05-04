@@ -9,6 +9,6 @@
 #include <stdint.h>
 #include "gbwf.h"
 
-uint8_t RunState_TitleScreen( uint8_t start_at_hiscores );
+topLevelState_t RunState_TitleScreen( uint8_t start_at_hiscores );
 
 #endif

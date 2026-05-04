@@ -14,43 +14,55 @@
 #include "error_state.h"
 #include "high_score_manager.h"
 
-#include "error_codes.h"
+#include "error_manager.h"
 
 uint32_t score;
 
 void main(void)
 {
   int displayHighScoresFirst = 1;
-  int return_value = 0;
-
-  // Splash screen- run once and then exit
-  RunState_SplashScreen();
+  topLevelState_t cur_state = kSplashScreenState;
 
   // Initialize high scores
   initHighScoreList();
 
+  setErrorVars( kTestError, 0x1234 );
+  cur_state = kErrorState;
+
   while( 1 )
   {
-    // Title screen - cycles between title screen, high scores, and attract
-    return_value = RunState_TitleScreen( displayHighScoresFirst );
-
-    switch (return_value)
+    switch ( cur_state )
     {
-      case OPTIONS_STATE:
-        RunState_Options();
+      case kSplashScreenState:
+        // Splash screen- run once and then exit
+        cur_state = RunState_SplashScreen();
         break;
 
-      case GAME_STATE:
-        RunState_Game();
+      case kTitleScreenState:
+        // Title screen - cycles between title screen, high scores, and attract
+        cur_state = RunState_TitleScreen( displayHighScoresFirst );
 
-        if ( isNewHighScore (score) )
-           RunState_HighScoreEntry();
+      case kOptionState:
+        cur_state = RunState_Options();
+        break;
 
-        RunState_GameOver();
+      case kGameState:
+        cur_state = RunState_Game();
+        break;
+
+      case kHighScoreEntryState:
+        cur_state = RunState_HighScoreEntry();
+
+      case kGameOverState:
+        cur_state = RunState_GameOver();
         break;
 
       default:
-        RunState_Error( kBadState, return_value );
+        cur_state = RunState_Error();
+        
+        // Do not continue execution after a fatal error.
+        while(1);
+
         break;
       }
     }

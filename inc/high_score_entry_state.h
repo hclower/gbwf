@@ -8,6 +8,6 @@
 #include <gb/gb.h>
 #include "gbwf.h"
 
-void RunState_HighScoreEntry( void );
+topLevelState_t RunState_HighScoreEntry( void );
 
 #endif

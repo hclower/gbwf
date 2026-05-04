@@ -5,8 +5,10 @@
 #ifndef _OPTIONS_STATE_H
 #define _OPTIONS_STATE_H
 
+#include "gbwf.h"
+
 /* TBD options variables */
 
-void RunState_Options( void );
+topLevelState_t RunState_Options( void );
 
 #endif
