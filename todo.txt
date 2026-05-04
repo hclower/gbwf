@@ -1,10 +1,10 @@
 To Do List
 
-[ ] Write up to do list plan
+[X] Write up rough roadmap
 
 [ ] Remove temp HS handler testing code
 [ ] Add utitities w/ 'wait for any button' function
-[ ] Add automated size display to makefile
+[X] Add automated size display to makefile
 
 - Error handling:
  [ ] Restructure main function so that each state returns a new state

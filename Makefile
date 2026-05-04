@@ -42,7 +42,7 @@ OBJS        = $(IMGSOURCES:%.c=$(OBJDIR)/%.o) $(CSOURCES:%.c=$(OBJDIR)/%.o) $(AS
 LCCFLAGS += -I$(RESDIR)
 
 
-all:	prepare $(BINS)
+all:	prepare $(BINS) size
 
 compile.bat: Makefile
 	@echo "REM Automatically generated from Makefile" > compile.bat
@@ -67,6 +67,9 @@ $(OBJDIR)/%.o:	$(SRCDIR)/%.s
 # Link the compiled object files into a .gb ROM file
 $(BINS):	$(OBJS)
 	$(LCC) $(LCCFLAGS) -o $(BINS) $(OBJS)
+	
+size: $(BINS)
+	romusage $(BINS)
 
 prepare:
 	mkdir -p $(OBJDIR)
