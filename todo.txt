@@ -1,16 +1,68 @@
 To Do List
 
+[ ] Write up to do list plan
+
+[ ] Remove temp HS handler testing code
+[ ] Add utitities w/ 'wait for any button' function
+[ ] Add automated size display to makefile
+
+- Error handling:
+ [ ] Restructure main function so that each state returns a new state
+ [ ] Test error state
+ [ ] Split state code into error manager & error state (for displaying err)
+ [ ] Modify error codes to work like errno (global variables, not passed)
+
 [ ] Game state skeleton
+[ ] Figure out subpixel movement
 
 - Background:
  [ ] Port parallax BG stuff into game state
  [ ] Modify parallax BG stuff to use precalculated tables for values
  [ ] Update to support 2x2 tile patterns
  [ ] Modify to support one tile high status menu
+ [ ] Update for subpixel movement?
 
 - Bullets
  [ ] Put together fake linked list implementation to hold bullets
  [ ] Write functions to add/remove bullets from list
- [ ] Write update loop for bullets
  [ ] Figure out structure for bullets
+ [ ] Write update loop for bullets
+ [ ] Basic bullet
  [ ] Test w/ max # of bullets onscreen
+
+- Test enemy/basic behavior
+ [ ] Infrastructure for enemy
+ [ ] Add enemy firing
+ [ ] Expand test enemy to multiple turrets
+
+- Player ship state machine
+ [ ] Sketch out player ship state machine
+ [ ] Implement
+
+- Collision detection (bullets vs player)
+ [ ] Variable or fixed size enemy bullets?
+ [ ] Where to do collision detection?
+ [ ] Functions for collision detection
+
+- Collision detection (player bullets vs enemy)
+
+- Collision detection (enemy vs player)
+ - Reuse code from pbullet vs enemy?
+
+- Enemy Damage
+
+- Enemy Generation
+
+- Enemy Firing
+ [ ] More bullet types?
+
+- Game Over screen
+
+- Basic title screen
+
+- High Score manager
+
+- Splash screen
+ [ ] Basic splash screen
+ [ ] Figure out how palette effects work
+ [ ] 
