@@ -7,20 +7,33 @@ To Do List
 [X] Add automated size display to makefile
 
 - Error handling:
- [ ] Restructure main function so that each state returns a new state
- [ ] Test error state
- [ ] Split state code into error manager & error state (for displaying err)
- [ ] Modify error codes to work like errno (global variables, not passed)
+ [X] Restructure main function so that each state returns a new state
+ [X] Test error state
+ [X] Split state code into error manager & error state (for displaying err)
+ [X] Modify error codes to work like errno (global variables, not passed)
+
+[X] Figure out subpixel movement
+[X] Test subpixel speed vs normal speed
+   - Looks like using structures to do subpixel operations is actually slightly
+     faster than doing it with bit-shifts
+     - Makes sense, bit-shifts are fast but it's still an operation the structs
+       are totally skipping. Both flavors are doing 16-bit math.
+   - Bit shifting does allow a larger play area- 8.8 is good enough to track
+     everything onscreen but will run into problems tracking objects offscreen.
+     The Simple Physics demo means that the 'pixel' portion of each word can be
+     in a 1024 x 1024 area.
+   - This probably does not matter for GBWF which is effectively a single-screen
+     game, but it's worth rememebring for the future.
 
 [ ] Game state skeleton
-[ ] Figure out subpixel movement
 
 - Background:
  [ ] Port parallax BG stuff into game state
  [ ] Modify parallax BG stuff to use precalculated tables for values
  [ ] Update to support 2x2 tile patterns
  [ ] Modify to support one tile high status menu
- [ ] Update for subpixel movement?
+ [ ] Update for subpixel movement
+ [ ] Experiment w/ faster movement on top and bottom bars
 
 - Bullets
  [ ] Put together fake linked list implementation to hold bullets
@@ -64,5 +77,5 @@ To Do List
 
 - Splash screen
  [ ] Basic splash screen
- [ ] Figure out how palette effects work
+ [X] Figure out how palette effects work
  [ ] 
