@@ -6,7 +6,6 @@
 #define _GBWF_H
 
 #include <stdint.h>
-#include "error_manager.h"
 
 enum topLevelState {
   kSplashScreenState   = 0,
