@@ -24,8 +24,18 @@ To Do List
      in a 1024 x 1024 area.
    - This probably does not matter for GBWF which is effectively a single-screen
      game, but it's worth rememebring for the future.
+[X] Find an extension to Sublime Text to generate Doxygen headers
+[X] Game state skeleton
 
-[ ] Game state skeleton
+    Some notes on banking, since I don't know where else to put them.
+    - Everyone needs access to the BG tiles so those should be in the main ROM.
+    - Ship, font, and bullets will be used in several places and should be in 
+      main ROM?
+    - Enemy tiles are only used during game state and can be placed in their 
+      own bank.
+    - Bubble font for level transitions not used elsewhere, can be in its own 
+      bank.
+    - Some state processing can be broken out?
 
 - Background:
  [ ] Port parallax BG stuff into game state
@@ -74,6 +84,10 @@ To Do List
 - Basic title screen
 
 - High Score manager
+
+- Level intro screen
+ [ ] Pick font, edit if desired.
+ [ ] Psudocode screen
 
 - Splash screen
  [ ] Basic splash screen

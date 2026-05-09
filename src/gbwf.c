@@ -16,8 +16,6 @@
 
 #include "error_manager.h"
 
-uint32_t score;
-
 void main(void)
 {
   int displayHighScoresFirst = 1;
