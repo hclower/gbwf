@@ -146,6 +146,13 @@ bool mainGameStateLoop( void ) {
  * @brief Runs the new level intro.
  * @details Executes the new level intro. This will continue to run the
  *          background scroll while the intro is executing.
+ *          
+ *          It is assumed this is run after the next stage enemy has been
+ *          generated (but possibly before it is rendered?)
+ *          Note that we will need the enemy name for this but there's no 
+ *          onscreen bullets and therefore not a lot going on, so potentially 
+ *          we could get a name and run generation in the background.
+ *          
  *          The player ship is still onscreen and controllable but the player
  *          is prevented from firing.
  *          The idea is that the level number will slide onto the screen
@@ -155,13 +162,57 @@ bool mainGameStateLoop( void ) {
  *          both accelerate offscreen before the enemy appears.
  *          I'll use a bubble font for this made of sprites; assuming the player
  *          ship is 2 sprites wide this leaves 8 sprites before I bump against
- *          the 10 sprite/line limit, so names will need to be short.
+ *          the 10 sprite/line limit, so lines of text will be capped at 8
+ *          characters.
+ *          
+ *          Depending on how slanty the font ends up being, each line may be
+ *          one sprite or two sprites stacked on top of each ther (eg one sprite
+ *          is the top half and one sprite is the bottom half of a letter)
+ *          
  *          Hypothetically since the enemy will be drawn on the window, it could
  *          slide on while the fonts slide off.
  *          Text could slowly scroll while 'stopped' for a more dynamic visual.
- * 
- * @param d [description]
+ *          
+ *          Midframe OAM DMAs look like they should be possible but may be
+ *          glitchy/tricky to get right. Will need to experiment.
+ *          
+ *          Start/stop/velocity can be algorithmically determined based on
+ *          a set of constants.
  */
 void newLevelIntro( void ){
+  // Initialize new level intro
+  //
+  // Text Display
+  // - Set initial velocity (shared by all words)
+  // - While counter < counter_max
+  //   - Apply velocity to top text
+  //     - If anything scrolls too far offscreen move it to an illegal Y value
+  //   - Start DMA of top text sprite info
+  //     - If letters are two sprites tall bottom will need to be DMA'd over
+  //       midway through each frame
+  //   - Apply negative velocity to bottom text
+  //     - If anything scrolls too far offscreen move it to an illegal Y value
+  //   - Apply Ax to velocity
+  //     - If this changes sign, set to min velocity
+  //   - Counter checks:
+  //     - If counter = pause_start, set ax to 0 and dx to desired value
+  //     - If counter = pause_end, set ax to target value
+}
 
+
+/**
+ * @brief Initializes everything for the new level into
+ * @details Does the following:
+ * - Load font
+ * - Generate sprite arrays for text
+ *   - This will require separate arrats for upper and lower text!
+ * - Set global variable that makes BG scroll break midscreen.
+ */
+void newLevelIntroInit( void ) {
+  // - Load font
+
+  // - Generate sprite arrays for text
+  //      - This will require separate arrats for upper and lower text!
+
+  // - Set global variable that makes BG scroll break midscreen?
 }
