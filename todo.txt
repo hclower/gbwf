@@ -37,8 +37,14 @@ To Do List
       bank.
     - Some state processing can be broken out?
 
+ [ ] Create spreadsheet/set of #defines for sprite tables
+    - Break out which sprites will be used where and for what
+    - This should probably go into a set of defines?
+
 - Background:
  [ ] Port parallax BG stuff into game state
+ [X] Create spreadsheet for parallax values
+ [ ] Put together precalculated tables for values
  [ ] Modify parallax BG stuff to use precalculated tables for values
  [ ] Update to support 2x2 tile patterns
  [ ] Modify to support one tile high status menu
@@ -87,7 +93,15 @@ To Do List
 
 - Level intro screen
  [ ] Pick font, edit if desired.
- [ ] Psudocode screen
+     - Custom font, still working on it. In rsrc.
+ [X] Psudocode screen
+
+ - Getting the parallaxing background is a limiter on being able to proceed here
+ [ ] Implement init function
+ [ ] Implement Main function
+ [ ] Test midframe OAM DMA
+ [ ] Move level intro into its own file?
+
 
 - Splash screen
  [ ] Basic splash screen
