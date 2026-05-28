@@ -11,3 +11,5 @@
  topLevelState_t RunState_SplashScreen( void ) {
    return kTitleScreenState;
  }
+
+ /* eof */
