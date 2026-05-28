@@ -23,10 +23,7 @@ void main(void)
 
   // Initialize high scores
   initHighScoreList();
-
-  setErrorVars( kTestError, 0x1234 );
-  cur_state = kErrorState;
-
+  cur_state = kGameState;
   while( 1 )
   {
     switch ( cur_state )
