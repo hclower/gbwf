@@ -7,17 +7,29 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "gbwf.h"
 #include "high_score_manager.h"
+#include "parallax_bg.h"
+#include "../rsrc/cat_tile.h"
 
 enum internalGameState {
   kStandardPlay
 };
+
+/* Local function declarations */
+void newLevelIntro( void );
+void getPlayerMoveInput( const uint8_t joypad_state );
+void initGameState ( void );
+bool mainGameStateLoop ( void );
 
 typedef enum internalGameState internalGameState_t;
 
 uint32_t score;
 uint32_t lives;
 uint32_t level;
+
+subpixel_t player_x;
+subpixel_t player_y;
 
 // Constants
 //  - precalculated parallax scroll info
@@ -28,9 +40,6 @@ uint32_t level;
 //  - player position
 //  - pbullet array
 //  - ebullet array
-
-void initGameState ( void );
-bool mainGameStateLoop ( void );
 
 /**
  * @brief Top-level main game state function
@@ -84,6 +93,22 @@ void initGameState( void ) {
   score = 0;
   lives = 3;
   level = 1;
+
+  parallaxInit();
+
+  player_x.pix = 50;
+  player_y.pix = 50;
+  player_x.subpix = 0;
+  player_y.subpix = 0;
+  set_sprite_data( 0, 2, cat_tile_tiles );
+  set_sprite_tile( 0, 0 );
+  set_sprite_tile( 1, 1 );
+  move_sprite( 0, player_x.pix, player_y.pix );
+  move_sprite( 1, player_x.pix-8, player_y.pix );
+
+  SHOW_BKG;
+  SPRITES_8x8;
+  SHOW_SPRITES;
 }
 
 
@@ -97,11 +122,13 @@ void initGameState( void ) {
  *         FALSE otherwise (this is a new level)
  */
 bool mainGameStateLoop( void ) {
-  bool enemy_alive = 1;
+  bool    enemy_alive = 1;
+  uint8_t joypad_state;
 
   // Main state loop
   while( 1 ) {
     // Wait for vsync
+    vsync();
 
     // vsync visual upates.
     // - Sprite positions
@@ -115,9 +142,16 @@ bool mainGameStateLoop( void ) {
     //     they're used, even if we overrun vsync a little.
     // After this, we should be free to update everything...
 
+    move_sprite( 0, player_x.pix, player_y.pix );
+    move_sprite( 1, player_x.pix-8, player_y.pix );
+    parallaxUpdate(player_y.pix);
+
     // Update player position
     //   - (this should be a function, will need during level intro)
     // add new pbullets
+    joypad_state = joypad();
+    getPlayerMoveInput( joypad_state );
+
 
     // Next window position
     // Figure out next set of bg tiles to use for window bg
@@ -216,3 +250,37 @@ void newLevelIntroInit( void ) {
 
   // - Set global variable that makes BG scroll break midscreen?
 }
+
+
+/**
+ * @brief Reads input and updates the player's position.
+ * @details Reads input and updates the player's position.
+ *          Applies screen border limits internally.
+ */
+void getPlayerMoveInput( const uint8_t joypad_state ) {
+  if ( joypad_state & J_LEFT )  {
+    if( player_x.pix != 8 ) {
+      player_x.pix --;
+    }
+  }
+
+  if ( joypad_state & J_UP )  {
+    if( player_y.pix != 16 ) {
+      player_y.pix --;
+    }
+  }
+
+  if ( joypad_state & J_RIGHT ) { 
+    if( player_x.pix != 160 ) {
+      player_x.pix ++;
+    }
+  }
+
+  if ( joypad_state & J_DOWN ) {
+    if( player_y.pix != 144 ) {
+      player_y.pix ++;
+    }
+  }
+}
+
+/* eof */

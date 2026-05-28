@@ -19,6 +19,16 @@ enum topLevelState {
 
 typedef enum topLevelState topLevelState_t;
 
+union subpixel_u{
+  uint16_t u16;
+  struct {
+    uint8_t pix;
+    uint8_t subpix;
+  };
+};
+
+typedef union subpixel_u subpixel_t;
+
 #define OPTIONS_STATE 0U
 #define GAME_STATE    1U
 

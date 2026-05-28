@@ -6,6 +6,7 @@
 #define _GBWF_UTILITIES_H
 
 #include <gb/gb.h>
+#include <stdint.h>
 
 void waitForInput( void );
 

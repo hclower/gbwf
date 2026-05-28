@@ -40,12 +40,32 @@ To Do List
  [ ] Create spreadsheet/set of #defines for sprite tables
     - Break out which sprites will be used where and for what
     - This should probably go into a set of defines?
+    - Title screen:
+      - ??
+    - Ingame (all):
+      - 2 sprites for player ship
+    - Ingame (normal):
+      - 8 sprites for explosion SFX 
+      - 4 sprites for player bullets
+      - 26 sprites for enemy bullets
+    - Ingame (level change):
+      - 2 sprites for player ship
+      - 16 sprites for upper letters
+        - 8 letters of text rendered as two sprites
+      - 32 sprites for lower letters
+        - 16 letter of text rendered as two rows of two sprites
+        - Current plan is to upate sprites midframe for top and bottom of screen
+
+[ ] Ask on Discord(s) wrt reloading sprintes midframe
+    - Pan Docs say it can be glitchy. What are the details on that?
+    - Can you update mid-sprite if nothing abt the sprite changes?
+[X] Add in player movement
 
 - Background:
- [ ] Port parallax BG stuff into game state
+ [X] Port parallax BG stuff into game state
  [X] Create spreadsheet for parallax values
- [ ] Put together precalculated tables for values
- [ ] Modify parallax BG stuff to use precalculated tables for values
+ [X] Put together precalculated tables for values
+ [X] Modify parallax BG stuff to use precalculated tables for values
  [ ] Update to support 2x2 tile patterns
  [ ] Modify to support one tile high status menu
  [ ] Update for subpixel movement
