@@ -56,9 +56,16 @@ To Do List
         - 16 letter of text rendered as two rows of two sprites
         - Current plan is to upate sprites midframe for top and bottom of screen
 
-[ ] Ask on Discord(s) wrt reloading sprintes midframe
+[X] Ask on Discord(s) wrt reloading sprintes midframe
     - Pan Docs say it can be glitchy. What are the details on that?
     - Can you update mid-sprite if nothing abt the sprite changes?
+    - Word is you can't draw sprites while you're DMAing because it locks the
+      bus. Should be possible if you turn sprites off & don't draw near the
+      player's ship 
+    - Thought: mask a bit or bits out of the player's position and, use
+      that to determine if they're on the top or bottom half of the screen,
+      then do a DMA right after the top text or right below the bottom 
+      accordingly
 [X] Add in player movement
 
 - Background:
@@ -66,10 +73,18 @@ To Do List
  [X] Create spreadsheet for parallax values
  [X] Put together precalculated tables for values
  [X] Modify parallax BG stuff to use precalculated tables for values
- [ ] Update to support 2x2 tile patterns
- [ ] Modify to support one tile high status menu
+ [X] Update to support 2x2 tile patterns
+ [X] Modify to support one tile high status menu
  [ ] Update for subpixel movement
  [ ] Experiment w/ faster movement on top and bottom bars
+ [ ] Rejigger height
+ [ ] Add window BG back in
+ [ ] Multi-tile window BG patterns
+     [ ] Figure out how to precalculate and store patterns
+     [ ] Add in function to update BG pattern during HBLANK
+     [ ] Add tiles to memory
+         - Should these be in a specific bank to isolate them?
+         - How long does switching banks take?
 
 - Bullets
  [ ] Put together fake linked list implementation to hold bullets

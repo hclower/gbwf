@@ -59,14 +59,17 @@ const uint8_t parallax_y_offsets[17][6] = { {17, 28, 29, 32, 32, 32},
 
 /* Constant tile info */
 const uint8_t bg_tiles_start    = 1;
-const uint8_t bg_tile_count     = 6;
+const uint8_t bg_tile_count     = 9;
 const uint8_t bg_tile_t_dark    = 0;
 const uint8_t bg_tile_t_light   = 1;
-const uint8_t bg_tile_center    = 2;
-const uint8_t bg_tile_b_light   = 3;
-const uint8_t bg_tile_b_dark    = 4;
+const uint8_t bg_tile_center_ul = 2;
+const uint8_t bg_tile_center_ur = 3;
+const uint8_t bg_tile_center_bl = 4;
+const uint8_t bg_tile_center_br = 5;
+const uint8_t bg_tile_b_light   = 6;
+const uint8_t bg_tile_b_dark    = 7;
 const uint8_t bg_tile_rows      = 22;
-const uint8_t bg_tile_array[23] = { 0, 0, 0, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 5 };
+const uint8_t bg_tile_array[23] = { 0, 0, 0, 1, 1, 2, 4, 2, 4, 2, 4, 2, 4, 2, 4, 2, 6, 6, 7, 7, 7, 8 };
 
 /* 'live' data for each frame. */
 uint8_t parallax_count          = 0;
@@ -206,11 +209,21 @@ void parallaxLoadBgTiles( void ) {
  * @todo Look up how inline works, consider defining this as inline for speed.
  */
 void parallaxDrawBgTiles( void ) {
-  UINT8 i;
-  UINT8 bg_line[32];
+  uint8_t i;
+  uint8_t j;
+  uint8_t bg_line[32];
 
   for( i = 0; i < bg_tile_rows; i ++ ) {
-    memset(bg_line, bg_tiles_start + bg_tile_array[i], 32 );
+    if( bg_tile_array[i] == bg_tile_center_ul ||
+        bg_tile_array[i] == bg_tile_center_bl ) {
+
+      for( j = 0; j < 32; j ++ ) {
+        bg_line[j] = bg_tiles_start + bg_tile_array[i] + (j & 0x01);
+      }
+    }
+    else { 
+        memset(bg_line, bg_tiles_start + bg_tile_array[i], 32 );
+    }
     set_bkg_tiles( 0,  i, 32, 1, bg_line );
   }
 }
