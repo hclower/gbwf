@@ -77,10 +77,30 @@ To Do List
  [X] Modify to support one tile high status menu
  [ ] Update for subpixel movement
  [ ] Experiment w/ faster movement on top and bottom bars
- [ ] Rejigger height
- [ ] Add window BG back in
+ [X] Rejigger height
+ [X] Add window BG back in
  [ ] Multi-tile window BG patterns
-     [ ] Figure out how to precalculate and store patterns
+     [X] Figure out how to precalculate and store patterns
+         - png2asset will turn sets of tiles into a single array, starting from
+           the top-left and moving through left-to-right and then up-to-down
+         - Tiles will need to be in a big column in Asperite. :|
+           - If I were clever I could probably figure out how to generate the
+             other 7 positions automatically based on the first
+           - png2asst creates a bunch of metasprite constants but I think these
+             are harmless?
+         - Drawing the window tiles will require x * (y+1) * 8 tiles, for a 2x2
+           pattern this is 48 tiles total.
+           - Might be possibe to cut this down to x * y * 8 for tile sizes with
+             a custom copy-to-sprite-data function that would do the wrap 
+             internally rather than having an extra line of tiles at the bottom?
+           - This would save x * 8 tiles, which can add up- it'd be 32 here.
+         - I think that's fine for this project but this is clearly a technique
+           to use sparingly, that's a lot of BG tiles being eaten for this
+         - No! This is not true! It's easier just to re-update the x * y tiles
+           you're using! You don't need to keep everything in sprite/tile space!
+           - There are probably some speed concerns there, though, writing to
+             vram isn't fast...
+     [ ] Draw test BG tiles
      [ ] Add in function to update BG pattern during HBLANK
      [ ] Add tiles to memory
          - Should these be in a specific bank to isolate them?

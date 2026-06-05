@@ -10,4 +10,8 @@
 void parallaxInit( void );
 void parallaxUpdate( const uint8_t y );
 
+// Window location variables
+extern uint8_t window_x;
+extern uint8_t window_y;
+
 #endif

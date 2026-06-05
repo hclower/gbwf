@@ -4,6 +4,9 @@
  *  - Call parallax_init()
  *  - Call parallax_update() during VSYNC every frame
  *
+ * This manages the window display and hide as well, and redrawing the 
+ * background.
+ * 
  * Note that parallax_init() will install an ISR function which does the 
  * actual movement. This will not work if that is uninstalled.
  */
@@ -14,10 +17,18 @@
 #include <stdint.h>
 #include <string.h>
 #include "../rsrc/parallax_bg_tiles.h"
+#include "../rsrc/win_bg_test.h"
+
+#define INVALID_WIN_X    ((uint8_t) 170)
+#define WINDOW_ON_COUNT  ((uint8_t) 2)
+#define WINDOW_OFF_COUNT ((uint8_t) 3)
 
 void parallaxDrawBgTiles( void );
 void parallaxLoadBgTiles( void );
 void parallaxInitBg( void );
+void parallaxDrawWinTiles( void );
+void parallaxLoadWinTiles( void );
+void parallaxInitWin( void );
 void parallaxIsr( void );
 
 /* Big tables of predefined data. Pulled from parallax_spreadsheet.ods. */
@@ -71,6 +82,9 @@ const uint8_t bg_tile_b_dark    = 7;
 const uint8_t bg_tile_rows      = 22;
 const uint8_t bg_tile_array[23] = { 0, 0, 0, 1, 1, 2, 4, 2, 4, 2, 4, 2, 4, 2, 4, 2, 6, 6, 7, 7, 7, 8 };
 
+const uint8_t win_bg_tiles_start = 10;
+const uint8_t win_bg_tile_count  = 4;  // Only four in tile space; will be recycled.
+
 /* 'live' data for each frame. */
 uint8_t parallax_count          = 0;
 uint8_t parallax_curframe_count = 0;
@@ -79,7 +93,9 @@ uint8_t parallax_x_offset[]     = {    0,    0,    0,    0,    0,   0 };
 uint8_t parallax_rate[]         = {    0,    1,    2,    1,    0,   0 };
 uint8_t parallax_rate_mask[]    = { 0x00, 0x01, 0x03, 0x01, 0x00 };
 
-
+uint8_t show_window             = 0;
+uint8_t window_x                = 100;
+uint8_t window_y                = 50;
 /**
  * @brief Initializes parallax scrolling.
  * @details Initializes the parallax BG functions.
@@ -90,6 +106,7 @@ uint8_t parallax_rate_mask[]    = { 0x00, 0x01, 0x03, 0x01, 0x00 };
  */
 void parallaxInit( void ) {
   parallaxInitBg();
+  parallaxInitWin();
 
   /* Set up interrupts for the parallaxing effect */
   CRITICAL {
@@ -133,6 +150,15 @@ void parallaxUpdate( const uint8_t y ) {
   SCX_REG = parallax_x_offset                      [0];
   SCY_REG = parallax_y_offsets [parallax_cur_slice][0];
 
+  if ( show_window ) {
+    if ( parallax_count == WINDOW_ON_COUNT ) {
+      WY_REG = window_y;
+      WX_REG = window_x;
+    } else {
+      WX_REG = INVALID_WIN_X;
+    }
+  }
+
   return;
 }
 
@@ -148,13 +174,13 @@ void parallaxIsr( void ) NONBANKED {
   SCY_REG = parallax_y_offsets [parallax_cur_slice][parallax_curframe_count];
   SCX_REG = parallax_x_offset                      [parallax_curframe_count];
 
-/*
+
   if( parallax_curframe_count == 2 )
   {
      if( show_window )
      {
-          WX_REG = wx_value;
-          WY_REG = wy_value;
+          WX_REG = window_x;
+          WY_REG = window_y;
           SHOW_WIN;
      }     
   }
@@ -163,7 +189,7 @@ void parallaxIsr( void ) NONBANKED {
      WX_REG = 1;
      HIDE_WIN;
   }
-*/
+
 
   // Set X offset reg for the current strip.
   LYC_REG = parallax_int_lines[parallax_cur_slice][parallax_curframe_count];
@@ -180,8 +206,6 @@ void parallaxIsr( void ) NONBANKED {
  * @details Loads and draws the background tiles.
  *          Currently uses constants defined elsewhere in this file; it may be
  *          desirable to move these to a separate header at some point.
- * 
- * @param d [description]
  */
 void parallaxInitBg( void ) {
   parallaxLoadBgTiles();
@@ -225,6 +249,63 @@ void parallaxDrawBgTiles( void ) {
         memset(bg_line, bg_tiles_start + bg_tile_array[i], 32 );
     }
     set_bkg_tiles( 0,  i, 32, 1, bg_line );
+  }
+}
+
+
+/**
+ * @brief Initializes the window
+ * @details Loads and draws the background tiles used on the window.
+ *          Currently uses constants defined elsewhere in this file; it may be
+ *          desirable to move these to a separate header at some point.
+ *          
+ *          I'm not too concerned because it's only executed once, but if time
+ *          is a concern it'd probably be a bit faster to piggyback drawing the
+ *          window with paralladDrawBgTiles().
+ */
+void parallaxInitWin( void ) {
+  parallaxLoadWinTiles();
+  parallaxDrawWinTiles();
+
+  show_window = 1; 
+}
+
+
+/**
+ * @brief Loads the BG tiles
+ * @details Loads the BG tiles to use.
+ *          Currently uses constants defined elsewhere in this file; it may be
+ *          desirable to move these to a separate header at some point.
+ * 
+ * @todo Look up how inline works, consider defining this as inline for speed.
+ */
+void parallaxLoadWinTiles( void ) {
+    set_bkg_data( win_bg_tiles_start, 
+                  win_bg_tile_count,
+                  win_bg_test_tiles ); // Test tiles, distinct from normal BG 
+                  // Real tiles
+                  //&(parallax_bg_tiles_tiles[16*bg_tile_center_ul]) );
+}
+
+/**
+ * @brief Draws the BG tiles
+ * @details Draws the lines of BG tiles.
+ *          Currently uses constants defined elsewhere in this file; it may be
+ *          desirable to move these to a separate header at some point.
+ * 
+ * @todo Look up how inline works, consider defining this as inline for speed.
+ */
+void parallaxDrawWinTiles( void ) {
+  uint8_t i;
+  uint8_t j;
+  uint8_t bg_line[32];
+
+  for( i = 0; i < bg_tile_rows; i ++ ) {
+      for( j = 0; j < 32; j ++ ) {
+        bg_line[j] = win_bg_tiles_start + ((i & 0x01)<<1) + (j & 0x01);
+      }
+ 
+    set_win_tiles( 0,  i, 32, 1, bg_line );
   }
 }
 
