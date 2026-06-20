@@ -28,6 +28,8 @@ uint32_t score;
 uint32_t lives;
 uint32_t level;
 
+uint16_t window_count;
+
 subpixel_t player_x;
 subpixel_t player_y;
 
@@ -94,6 +96,8 @@ void initGameState( void ) {
   lives = 3;
   level = 1;
 
+  window_count = 0;
+
   parallaxInit();
 
   player_x.pix = 50;
@@ -129,7 +133,8 @@ bool mainGameStateLoop( void ) {
   while( 1 ) {
     // Wait for vsync
     vsync();
-
+    WY_REG = window_y;
+    WY_REG = window_y;
     // vsync visual upates.
     // - Sprite positions
     // - Parallax scroll flip/flop & first line
@@ -142,9 +147,10 @@ bool mainGameStateLoop( void ) {
     //     they're used, even if we overrun vsync a little.
     // After this, we should be free to update everything...
 
+    parallaxUpdate(player_y.pix);
     move_sprite( 0, player_x.pix, player_y.pix );
     move_sprite( 1, player_x.pix-8, player_y.pix );
-    parallaxUpdate(player_y.pix);
+
 
     // Update player position
     //   - (this should be a function, will need during level intro)
@@ -154,6 +160,8 @@ bool mainGameStateLoop( void ) {
 
 
     // Next window position
+    moveWindow();
+
     // Figure out next set of bg tiles to use for window bg
     // add new ebullets
 
@@ -283,4 +291,24 @@ void getPlayerMoveInput( const uint8_t joypad_state ) {
   }
 }
 
+/**
+ * @brief Temp function to move the window
+ * @details Moves the window in a diamond pattern.
+ * 
+ * @param d [description]
+ */
+void moveWindow( void ) {
+  if ( window_count >= 15 && window_count < 45 )
+    window_y ++;
+  else
+    window_y --;
+
+  if ( window_count < 30 )
+    window_x --;
+  else
+    window_x ++;
+
+  window_count ++;
+  if (window_count == 60 ) window_count = 0;
+}
 /* eof */

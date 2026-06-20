@@ -100,11 +100,18 @@ To Do List
            you're using! You don't need to keep everything in sprite/tile space!
            - There are probably some speed concerns there, though, writing to
              vram isn't fast...
-     [ ] Draw test BG tiles
-     [ ] Add in function to update BG pattern during HBLANK
+     [X] POC test with numbered tiles
+         [X] Vertical movement
+         [X] Horiz movement
+     [X] Draw test BG tiles
+     [X] Add in function to update BG pattern during HBLANK
      [ ] Add tiles to memory
          - Should these be in a specific bank to isolate them?
          - How long does switching banks take?
+     [ ] Optimize tile movement
+         - Tile generation bumps into window when the player is at the very bottom of the screen,
+         - Looks like it's happening at an unexpected time compared to vsync?
+         - Run some tests on this!
 
 - Bullets
  [ ] Put together fake linked list implementation to hold bullets
