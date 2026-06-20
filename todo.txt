@@ -112,6 +112,8 @@ To Do List
          - Tile generation bumps into window when the player is at the very bottom of the screen,
          - Looks like it's happening at an unexpected time compared to vsync?
          - Run some tests on this!
+     [ ] Look into flicker
+         - appears when sprites are at certain heights
 
 - Bullets
  [ ] Put together fake linked list implementation to hold bullets
