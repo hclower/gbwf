@@ -114,6 +114,7 @@ To Do List
          - Run some tests on this!
      [ ] Look into flicker
          - appears when sprites are at certain heights
+     [ ] test using memcpy() for copies.
 
 - Bullets
  [ ] Put together fake linked list implementation to hold bullets
