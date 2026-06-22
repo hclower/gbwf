@@ -114,6 +114,9 @@ To Do List
          - Run some tests on this!
      [ ] Look into flicker
          - appears when sprites are at certain heights
+     [ ] Split tile updates into two parts: generating & updating
+         - New tiles can be generated right after window position is updated
+         - Tiles can be quickly copied after VSYNC
 
 - Bullets
  [ ] Put together fake linked list implementation to hold bullets
