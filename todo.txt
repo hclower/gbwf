@@ -117,6 +117,7 @@ To Do List
      [ ] Split tile updates into two parts: generating & updating
          - New tiles can be generated right after window position is updated
          - Tiles can be quickly copied after VSYNC
+     [ ] test using memcpy() for copies.
 
 - Bullets
  [ ] Put together fake linked list implementation to hold bullets
