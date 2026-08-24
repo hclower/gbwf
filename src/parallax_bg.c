@@ -30,7 +30,8 @@ void parallaxDrawWinTiles( void );
 void parallaxLoadWinTiles( void );
 void parallaxInitWin( void );
 void parallaxIsr( void );
-void parallaxUpdateWinTiles( void );
+void parallaxRedrawWinTiles( void );
+void parallaxCopyWinTiles( void );
 
 /* Big tables of predefined data. Pulled from parallax_spreadsheet.ods. */
 const uint8_t parallax_int_lines[17][5] = { {  7, 11,  95, 111, 135},
@@ -93,6 +94,10 @@ uint8_t parallax_cur_slice      = 0;
 uint8_t parallax_x_offset[]     = {    0,    0,    0,    0,    0,   0 };
 uint8_t parallax_rate[]         = {    0,    1,    2,    1,    0,   0 };
 uint8_t parallax_rate_mask[]    = { 0x00, 0x01, 0x03, 0x01, 0x00 };
+
+uint8_t new_win_bg_tiles[64];
+uint8_t y_tile_target;
+uint8_t x_tile_target;
 
 uint8_t show_window             = 0;
 uint8_t window_x                = 100;
@@ -160,7 +165,8 @@ void parallaxUpdate( const uint8_t y ) {
     //}
   }
 
-  parallaxUpdateWinTiles();
+  parallaxRedrawWinTiles();
+  parallaxCopyWinTiles();
   WY_REG = window_y;
 
   return;
@@ -323,13 +329,13 @@ void parallaxDrawWinTiles( void ) {
  *          they line up with the normal BG tiles. Uses precalculated BG tiles.
  *          This doesn't strictly need to be called during VBLANK but should 
  *          complete before the Window layer starts drawing.
+ *          
+ *          This function updates the static new_win_bg_tiles[] array;
+ *          they are copied with parallaxCopyWinTiles().
  */
-void parallaxUpdateWinTiles( void ) {
-  uint8_t new_win_bg_tiles[64];
+void parallaxRedrawWinTiles( void ) {
   uint8_t y_offset;
   uint8_t x_offset;
-  uint8_t y_tile_target;
-  uint8_t x_tile_target;
 
   // Figure out target Y offset based on window_y.
   // This is the offset within the tile, 
@@ -345,6 +351,9 @@ void parallaxUpdateWinTiles( void ) {
   // Generailzed formula for finding a byte:
   //   (((x offset * total y tiles * 8) + y offset) * 2) + Tile Offset + Byte
   // For a 2x2 gid, Tile Offset will be 0, 16, 48, and 64 for tiles 1, 2, 3, & 4
+
+  // Using unrolled loops here is ugly but it saves about a half-line over
+  // using memcpy().  
   new_win_bg_tiles[ 0] = win_bg_test_tiles[ (((x_offset * 6 * 8 ) + y_offset)*2) +  0 +  0];
   new_win_bg_tiles[ 1] = win_bg_test_tiles[ (((x_offset * 6 * 8 ) + y_offset)*2) +  0 +  1];
   new_win_bg_tiles[ 2] = win_bg_test_tiles[ (((x_offset * 6 * 8 ) + y_offset)*2) +  0 +  2];
@@ -416,7 +425,16 @@ void parallaxUpdateWinTiles( void ) {
   // Write local new tiles buffer into tile memory
   x_tile_target = (((window_x & 0xf) >> 3) << 1);
   y_tile_target =  ((window_y & 0xf) >> 3);
+}
 
+/**
+ * @brief Copies the tiles used for the background into background space.
+ * @details Does the set_bkg_data() to copy tiles previously generated in the
+ *          new_win_bg_tiles[] array by parallaxRedrawWinTiles().
+ *          Assumes that function has already been called in this frame;
+ *          there is no checking of that.
+ */
+void parallaxCopyWinTiles( void ) {
   set_bkg_data( win_bg_tiles_start +      y_tile_target  +      x_tile_target,
                 1,
                 &(new_win_bg_tiles[0]) );
@@ -432,10 +450,38 @@ void parallaxUpdateWinTiles( void ) {
   set_bkg_data( win_bg_tiles_start + (1 - y_tile_target) + (2 - x_tile_target), 
                 1,
                 &(new_win_bg_tiles[48]) );
+}
 
-//      set_bkg_data( win_bg_tiles_start, 
-//                    1,
-//                    &(new_win_bg_tiles[0]) );
+/**
+ * @brief Inline helper function to copy tile data.
+ * @details Copies a tile starting from src_arrac[src_start] to 
+ * dest_array[dest_start]. Copy uses an unrolled loop for speed, this cleans up
+ * the code a little.
+ * Always copies 16 bytes. No bounds checking, Fox only, Final Destination.
+ * 
+ * @param dest_array Destination array.
+ * @param src_array  Source array
+ * @param dest_start Starting location in the destination array
+ * @param src_start  Starting location in the source array.
+ */
+inline void copy_pbg_tile (       uint8_t *dest_array,       uint8_t *src_array,
+                            const uint8_t dest_start,   const uint8_t src_start  ) {
+  dest_array[dest_start +  0] = src_array[ src_start +  0];
+  dest_array[dest_start +  1] = src_array[ src_start +  1];
+  dest_array[dest_start +  2] = src_array[ src_start +  2];
+  dest_array[dest_start +  3] = src_array[ src_start +  3];
+  dest_array[dest_start +  4] = src_array[ src_start +  4];
+  dest_array[dest_start +  5] = src_array[ src_start +  5];
+  dest_array[dest_start +  6] = src_array[ src_start +  6];
+  dest_array[dest_start +  7] = src_array[ src_start +  7];
+  dest_array[dest_start +  8] = src_array[ src_start +  8];
+  dest_array[dest_start +  9] = src_array[ src_start +  9];
+  dest_array[dest_start + 10] = src_array[ src_start + 10];
+  dest_array[dest_start + 11] = src_array[ src_start + 11];
+  dest_array[dest_start + 12] = src_array[ src_start + 12];
+  dest_array[dest_start + 13] = src_array[ src_start + 13];
+  dest_array[dest_start + 14] = src_array[ src_start + 14];
+  dest_array[dest_start + 15] = src_array[ src_start + 15];
 }
 
 /* eof */

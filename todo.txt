@@ -115,9 +115,15 @@ To Do List
      [ ] Look into flicker
          - appears when sprites are at certain heights
      [ ] Split tile updates into two parts: generating & updating
-         - New tiles can be generated right after window position is updated
-         - Tiles can be quickly copied after VSYNC
-     [ ] test using memcpy() for copies.
+          -  New tiles can be generated right after window position is updated
+          -  Tiles can be quickly copied after VSYNC
+         [X] Split functions
+         [ ] Rejigger function call timing
+         [ ] Debug new issue w/ floating line 
+     [X] test using memcpy() for copies.
+         - Unrolled loops take about 1.75 lines
+         - Memcpy() takes a little over 2 lines
+     [ ] Make copy functions inline to clean up code
 
 - Bullets
  [ ] Put together fake linked list implementation to hold bullets
